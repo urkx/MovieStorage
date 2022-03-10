@@ -5,10 +5,12 @@ import com.ulopez.moviestorage.entity.Movie;
 import com.ulopez.moviestorage.repository.GenreRepository;
 import com.ulopez.moviestorage.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MovieService {
@@ -25,30 +27,14 @@ public class MovieService {
 
     @Transactional
     public Movie save(Movie m) {
-        /*
-           Checking if the movie genres exists.
-           If not, create it.
-         */
-        /*
-        m.getGenres().forEach( g -> {
-            var entity = this.gr.getByName(g.getName());
-            if(entity != null) {
-                g.setId(entity.getId());
-            } else {
-                g.setId(this.gr.save(g).getId());
-            }
-        });*/
         m.setGenres(this.checkGenreExists(m.getGenres()));
-        var newMovie = mr.save(m);
-        return newMovie;
+        return mr.save(m);
     }
 
     @Transactional
     public void delete(Long id) {
         var movie = this.mr.findById(id);
-        if(movie.isPresent()) {
-            this.mr.delete(movie.get());
-        }
+        movie.ifPresent(value -> this.mr.delete(value));
     }
 
     @Transactional
@@ -69,14 +55,15 @@ public class MovieService {
     private List<Genre> checkGenreExists(List<Genre> l) {
         l.forEach( g -> {
             var entity = this.gr.getByName(g.getName());
-            if(entity != null) {
-                g.setId(entity.getId());
-            } else {
-                g.setId(this.gr.save(g).getId());
-            }
+            g.setId(Objects.requireNonNullElseGet(entity, () -> this.gr.save(g)).getId());
         });
 
         return l;
     }
 
+    public List<Movie> findMoviesByYear(int year, int page, int size) {
+        var paging = PageRequest.of(page, size);
+        var pageMovies = this.mr.findByYearPremiered(year, paging);
+        return pageMovies.getContent();
+    }
 }
