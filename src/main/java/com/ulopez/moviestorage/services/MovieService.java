@@ -31,7 +31,7 @@ public class MovieService {
     @Transactional
     public Movie save(Movie m) {
         m.setGenres(this.checkGenreExists(m.getGenres()));
-        return mr.save(m);
+        return this.mr.save(m);
     }
 
     @Transactional

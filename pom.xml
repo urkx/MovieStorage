@@ -12,7 +12,7 @@
 	<artifactId>moviestorage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>moviestorage</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Movie Storage</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -32,10 +32,30 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>-->
 	</dependencies>
 
 	<build>

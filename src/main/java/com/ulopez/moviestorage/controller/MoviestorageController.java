@@ -15,11 +15,6 @@ public class MoviestorageController {
     @Autowired
     private MovieService ms;
 
-    @GetMapping
-    public String hello() {
-        return "Hello";
-    }
-
     @GetMapping("/getMovies")
     public ResponseEntity<List<Movie>> getAll() {
         var movies = this.ms.getAll();
