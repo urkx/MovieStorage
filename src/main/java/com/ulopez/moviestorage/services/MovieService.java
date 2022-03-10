@@ -6,6 +6,7 @@ import com.ulopez.moviestorage.repository.GenreRepository;
 import com.ulopez.moviestorage.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -61,9 +62,7 @@ public class MovieService {
         return l;
     }
 
-    public List<Movie> findMoviesByYear(int year, int page, int size) {
-        var paging = PageRequest.of(page, size);
-        var pageMovies = this.mr.findByYearPremiered(year, paging);
-        return pageMovies.getContent();
+    public List<Movie> findMoviesByYear(String field, int page, int size) {
+        return this.mr.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field))).getContent();
     }
 }
