@@ -7,11 +7,13 @@ import com.ulopez.moviestorage.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -53,16 +55,25 @@ public class MovieService {
         }
     }
 
+    public List<Movie> findMoviesByYear(List<String> fields, String title,  int page, int size) {
+        if("".equals(title)) {
+            return this.mr.findAll(PageRequest.of(page, size, Sort.by(generateOrders(fields)))).getContent();
+        } else {
+            return this.mr.findByTitleContaining(title,
+                    PageRequest.of(page, size, Sort.by(generateOrders(fields)))
+                    ).getContent();
+        }
+    }
+
+    private List<Order> generateOrders(List<String> fields) {
+        return fields.stream().map(Order::desc).collect(Collectors.toList());
+    }
+
     private List<Genre> checkGenreExists(List<Genre> l) {
         l.forEach( g -> {
             var entity = this.gr.getByName(g.getName());
             g.setId(Objects.requireNonNullElseGet(entity, () -> this.gr.save(g)).getId());
         });
-
         return l;
-    }
-
-    public List<Movie> findMoviesByYear(String field, int page, int size) {
-        return this.mr.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, field))).getContent();
     }
 }

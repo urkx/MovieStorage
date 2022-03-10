@@ -45,10 +45,11 @@ public class MoviestorageController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Movie>> findByYear(@RequestParam String field,
+    public ResponseEntity<List<Movie>> findByYear(@RequestParam List<String> fields,
+                                            @RequestParam(defaultValue = "") String title,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "2") int size) {
-        var movies = this.ms.findMoviesByYear(field, page, size);
+        var movies = this.ms.findMoviesByYear(fields, title, page, size);
         return ResponseEntity.ok(movies);
     }
 }
