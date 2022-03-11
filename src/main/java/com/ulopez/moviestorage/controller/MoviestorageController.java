@@ -35,8 +35,8 @@ public class MoviestorageController {
     }
 
     @PutMapping("/updateMovie")
-    public Movie update(@RequestBody Movie m, @RequestParam Long id) {
-        return this.ms.update(m, id);
+    public ResponseEntity<Movie> update(@RequestBody Movie m, @RequestParam Long id) {
+        return ResponseEntity.ok(this.ms.update(m, id));
     }
 
     @GetMapping("/list")

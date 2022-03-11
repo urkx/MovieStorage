@@ -47,11 +47,12 @@ public class MovieService {
             var oldM = movie.get();
             oldM.setTitle(m.getTitle());
             oldM.setRating(m.getRating());
+            oldM.setYearPremiered(m.getYearPremiered());
             oldM.setGenres(this.checkGenreExists(m.getGenres()));
             return this.mr.save(oldM);
         } else {
             m.setId(id);
-            return this.mr.save(m);
+            return save(m);
         }
     }
 
