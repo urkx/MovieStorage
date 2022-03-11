@@ -3,6 +3,7 @@ package com.ulopez.moviestorage.controller;
 import com.ulopez.moviestorage.entity.Movie;
 import com.ulopez.moviestorage.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,9 @@ public class MoviestorageController {
     }
 
     @DeleteMapping("/deleteMovie")
-    public void delete(@RequestParam Long id) {
+    public ResponseEntity delete(@RequestParam Long id) {
         this.ms.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/updateMovie")

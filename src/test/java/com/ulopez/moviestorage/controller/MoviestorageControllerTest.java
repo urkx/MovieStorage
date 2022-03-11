@@ -6,8 +6,10 @@ import com.ulopez.moviestorage.entity.Movie;
 import com.ulopez.moviestorage.repository.GenreRepository;
 import com.ulopez.moviestorage.repository.MovieRepository;
 import com.ulopez.moviestorage.services.MovieService;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MoviestorageControllerTest {
 
     @Autowired
@@ -35,16 +38,8 @@ public class MoviestorageControllerTest {
     ObjectMapper mapper;
 
 
-    @Autowired
-    MovieRepository movieRepository;
-    @Autowired
-    MovieService movieService;
-    @Autowired
-    GenreRepository genreRepository;
-
-
     @Test
-    public void testASaveMovies() throws Exception {
+    public void test1SaveMovie() throws Exception {
 
         /*
             INPUT
@@ -94,7 +89,7 @@ public class MoviestorageControllerTest {
     }
 
     @Test
-    public void testBGetMovies() throws Exception {
+    public void test2GetMovies() throws Exception {
         /*
             INPUT
          */
@@ -119,7 +114,7 @@ public class MoviestorageControllerTest {
     }
 
     @Test
-    public void testCUpdateMovie() throws Exception {
+    public void test3UpdateMovie() throws Exception {
         /*
             INPUT
          */
@@ -160,6 +155,18 @@ public class MoviestorageControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.content().json(this.mapper.writeValueAsString(movieRes)));
+    }
+
+    @Test
+    public void test4DeleteMovie() throws Exception {
+        var id = 3L;
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .delete("/moviestorage/deleteMovie?id=" + id);
+
+        mockMvc.perform(mockRequest)
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
 }
