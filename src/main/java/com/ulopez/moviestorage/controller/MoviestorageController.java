@@ -33,7 +33,7 @@ public class MoviestorageController {
     @DeleteMapping("/deleteMovie")
     public ResponseEntity delete(@RequestParam Long id) {
         this.ms.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/updateMovie")
@@ -47,6 +47,8 @@ public class MoviestorageController {
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "2") int size) {
         var movies = this.ms.findMoviesByYear(fields, title, page, size);
+        if(movies.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(movies);
     }
 }

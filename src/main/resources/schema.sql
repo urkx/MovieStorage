@@ -1,7 +1,7 @@
 create table Movie (
     id identity,
-    title varchar(100) not null,
-    rating real not null,
+    title varchar(100),
+    rating real,
     yearPremiered integer
 );
 
